@@ -9,20 +9,19 @@ import { Input } from '../../components/Input'
 import {
 	Container,
 	Title,
-	SubTitle,
 	ParagraphText,
 	ParagraphLinkText,
 } from './styles'
 
-export function Home() {
+export function Register() {
 	const [showPassword, setShowPassword] = useState(false)
+	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
 
 	const navigation = useNavigation()
 
 	return (
 		<Container>
-			<Title>Entrar</Title>
-			<SubTitle>O seu passaporte para o futuro</SubTitle>
+			<Title>Cadastre-se</Title>
 
 			<Input
 				placeholder="E-mail"
@@ -58,17 +57,36 @@ export function Home() {
 				</TouchableWithoutFeedback>
 			</Input>
 
-			<Button>Login</Button>
-
-			<ParagraphText>
-				Esqueceu a senha? <TouchableWithoutFeedback>
-					<ParagraphLinkText>Clique aqui</ParagraphLinkText>
+			<Input
+				placeholder="Confirmar senha"
+				textContentType="password"
+				selectTextOnFocus
+				secureTextEntry={!showPasswordConfirmation}
+			>
+				<TouchableWithoutFeedback
+					onPress={() => setShowPasswordConfirmation(state => !state)}
+				>
+					{showPasswordConfirmation ? (
+						<Ionicons
+							name="eye-off"
+							color="rgba(3, 1, 76, 0.2)"
+							size={24}
+						/>
+					) : (
+						<Ionicons
+							name="eye"
+							color="rgba(3, 1, 76, 0.2)"
+							size={24}
+						/>
+					)}
 				</TouchableWithoutFeedback>
-			</ParagraphText>
+			</Input>
+
+			<Button>Cadastrar</Button>
 
 			<ParagraphText>
-				Não possui uma conta? <TouchableWithoutFeedback onPress={() => navigation.navigate('Register')}>
-					<ParagraphLinkText>Registrar-se</ParagraphLinkText>
+				Já possui uma conta? <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+					<ParagraphLinkText>Entrar</ParagraphLinkText>
 				</TouchableWithoutFeedback>
 			</ParagraphText>
 		</Container>
