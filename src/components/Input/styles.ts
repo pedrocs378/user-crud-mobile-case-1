@@ -17,7 +17,7 @@ export const Container = styled.View`
 export const InputText = styled.TextInput`
 	flex: 1;
 	height: 50px;
-	font-family: ${fonts.openSans600};
+	font-family: ${fonts.openSans400};
 	color: ${colors.blue800};
 	font-size: 16px;
 	margin-right: 5px;

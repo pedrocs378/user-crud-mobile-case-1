@@ -61,7 +61,7 @@ export function Home() {
 			<Button>Login</Button>
 
 			<ParagraphText>
-				Esqueceu a senha? <TouchableWithoutFeedback>
+				Esqueceu a senha? <TouchableWithoutFeedback onPress={() => navigation.navigate('ForgotPassword')}>
 					<ParagraphLinkText>Clique aqui</ParagraphLinkText>
 				</TouchableWithoutFeedback>
 			</ParagraphText>
