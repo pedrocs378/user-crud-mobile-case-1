@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -20,75 +21,85 @@ export function Register() {
 	const navigation = useNavigation()
 
 	return (
-		<Container>
-			<Title>Cadastre-se</Title>
+		<ScrollView contentContainerStyle={{ flex: 1 }}>
+			<Container>
+				<Title>Cadastre-se</Title>
 
-			<Input
-				placeholder="E-mail"
-				keyboardType="email-address"
-				selectTextOnFocus
-				textContentType="emailAddress"
-				autoCapitalize="none"
-				autoCompleteType="email"
-			/>
+				<Input
+					placeholder="E-mail"
+					keyboardType="email-address"
+					selectTextOnFocus
+					textContentType="emailAddress"
+					autoCapitalize="none"
+					autoCompleteType="email"
+				/>
 
-			<Input
-				placeholder="Senha"
-				textContentType="password"
-				selectTextOnFocus
-				secureTextEntry={!showPassword}
-			>
-				<TouchableWithoutFeedback
-					onPress={() => setShowPassword(state => !state)}
+				<Input
+					placeholder="Nome"
+					selectTextOnFocus
+					textContentType="name"
+					autoCapitalize="words"
+					autoCompleteType="name"
+				/>
+
+				<Input
+					placeholder="Senha"
+					textContentType="password"
+					selectTextOnFocus
+					secureTextEntry={!showPassword}
 				>
-					{showPassword ? (
-						<Ionicons
-							name="eye-off"
-							color="rgba(3, 1, 76, 0.2)"
-							size={24}
-						/>
-					) : (
-						<Ionicons
-							name="eye"
-							color="rgba(3, 1, 76, 0.2)"
-							size={24}
-						/>
-					)}
-				</TouchableWithoutFeedback>
-			</Input>
+					<TouchableWithoutFeedback
+						onPress={() => setShowPassword(state => !state)}
+					>
+						{showPassword ? (
+							<Ionicons
+								name="eye-off"
+								color="rgba(3, 1, 76, 0.2)"
+								size={24}
+							/>
+						) : (
+							<Ionicons
+								name="eye"
+								color="rgba(3, 1, 76, 0.2)"
+								size={24}
+							/>
+						)}
+					</TouchableWithoutFeedback>
+				</Input>
 
-			<Input
-				placeholder="Confirmar senha"
-				textContentType="password"
-				selectTextOnFocus
-				secureTextEntry={!showPasswordConfirmation}
-			>
-				<TouchableWithoutFeedback
-					onPress={() => setShowPasswordConfirmation(state => !state)}
+				<Input
+					placeholder="Confirmar senha"
+					textContentType="password"
+					selectTextOnFocus
+					secureTextEntry={!showPasswordConfirmation}
 				>
-					{showPasswordConfirmation ? (
-						<Ionicons
-							name="eye-off"
-							color="rgba(3, 1, 76, 0.2)"
-							size={24}
-						/>
-					) : (
-						<Ionicons
-							name="eye"
-							color="rgba(3, 1, 76, 0.2)"
-							size={24}
-						/>
-					)}
-				</TouchableWithoutFeedback>
-			</Input>
+					<TouchableWithoutFeedback
+						onPress={() => setShowPasswordConfirmation(state => !state)}
+					>
+						{showPasswordConfirmation ? (
+							<Ionicons
+								name="eye-off"
+								color="rgba(3, 1, 76, 0.2)"
+								size={24}
+							/>
+						) : (
+							<Ionicons
+								name="eye"
+								color="rgba(3, 1, 76, 0.2)"
+								size={24}
+							/>
+						)}
+					</TouchableWithoutFeedback>
+				</Input>
 
-			<Button>Cadastrar</Button>
+				<Button>Cadastrar</Button>
 
-			<ParagraphText>
-				Já possui uma conta? <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-					<ParagraphLinkText>Entrar</ParagraphLinkText>
-				</TouchableWithoutFeedback>
-			</ParagraphText>
-		</Container>
+				<ParagraphText>
+					Já possui uma conta? <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+						<ParagraphLinkText>Entrar</ParagraphLinkText>
+					</TouchableWithoutFeedback>
+				</ParagraphText>
+			</Container>
+		</ScrollView>
 	)
 }
