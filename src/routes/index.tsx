@@ -5,6 +5,7 @@ import { Home } from '../pages/Home'
 import { Register } from '../pages/Register'
 import { ForgotPassword } from '../pages/ForgotPassword'
 import { Profile } from '../pages/Profile'
+import { EditProfile } from '../pages/EditProfile'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -21,6 +22,7 @@ export function Routes() {
 			<Screen name="ForgotPassword" component={ForgotPassword} />
 
 			<Screen name="Profile" component={Profile} />
+			<Screen name="EditProfile" component={EditProfile} />
 		</Navigator>
 	)
 }

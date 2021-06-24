@@ -20,7 +20,10 @@ export function Home() {
 	const navigation = useNavigation()
 
 	function handleSignIn() {
-		navigation.navigate('Profile')
+		navigation.reset({
+			index: 0,
+			routes: [{ name: 'Profile' }]
+		})
 	}
 
 	return (

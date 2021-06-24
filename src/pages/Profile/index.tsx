@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 
 import { colors } from '../../styles/colors'
@@ -23,11 +24,20 @@ import {
 
 export function Profile() {
 
+	const navigation = useNavigation()
+
+	function handleLoggout() {
+		navigation.reset({
+			index: 0,
+			routes: [{ name: 'Home' }]
+		})
+	}
+
 	return (
 		<ScrollView contentContainerStyle={{ flex: 1 }}>
 			<Container>
 				<Header>
-					<LogoutButton>
+					<LogoutButton onPress={handleLoggout}>
 						<LogoutButtonText>Logout</LogoutButtonText>
 
 						<Ionicons
@@ -49,7 +59,9 @@ export function Profile() {
 							pedrocs378@gmail.com
 						</UserEmail>
 
-						<EditProfileButton>
+						<EditProfileButton
+							onPress={() => navigation.navigate('EditProfile')}
+						>
 							<EditProfileButtonText>Editar perfil</EditProfileButtonText>
 						</EditProfileButton>
 					</ProfileUserContent>
