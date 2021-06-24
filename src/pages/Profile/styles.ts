@@ -57,7 +57,7 @@ export const UserWelcomeSpanText = styled.Text`
 `
 
 export const UserEmail = styled.Text`
-	background-color: rgba(127, 99, 244, 0.2);
+	background-color: ${colors.purpleLight};
 	border-radius: 5px;
 	margin-top: 8px;
 	padding: 3px 0;
@@ -71,7 +71,7 @@ export const UserEmail = styled.Text`
 
 export const EditProfileButton = styled(RectButton)`
 	margin-top: 50px;
-	background-color: ${colors.background};
+	background-color: ${colors.purpleLight};
 	height: 55px;
 	border-radius: 25px;
 
