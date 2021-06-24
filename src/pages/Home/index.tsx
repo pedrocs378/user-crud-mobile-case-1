@@ -19,6 +19,10 @@ export function Home() {
 
 	const navigation = useNavigation()
 
+	function handleSignIn() {
+		navigation.navigate('Profile')
+	}
+
 	return (
 		<Container>
 			<Title>Entrar</Title>
@@ -58,7 +62,9 @@ export function Home() {
 				</TouchableWithoutFeedback>
 			</Input>
 
-			<Button>Login</Button>
+			<Button onPress={handleSignIn}>
+				Login
+			</Button>
 
 			<ParagraphText>
 				Esqueceu a senha? <TouchableWithoutFeedback onPress={() => navigation.navigate('ForgotPassword')}>
