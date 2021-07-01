@@ -2,6 +2,9 @@ import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
+import Toast from 'react-native-toast-message'
+
+import { useAuth } from '../../hooks/useAuth'
 
 import { colors } from '../../styles/colors'
 
@@ -24,13 +27,31 @@ import {
 
 export function Profile() {
 
+	const { signOut } = useAuth()
+
 	const navigation = useNavigation()
 
-	function handleLoggout() {
-		navigation.reset({
-			index: 0,
-			routes: [{ name: 'Home' }]
-		})
+	async function handleLoggout() {
+		try {
+			await signOut()
+
+			Toast.show({
+				type: 'success',
+				text1: 'Sucesso',
+				text2: 'Você deslogou do app',
+			})
+
+			navigation.reset({
+				index: 0,
+				routes: [{ name: 'Home' }]
+			})
+		} catch {
+			Toast.show({
+				type: 'error',
+				text1: 'Erro',
+				text2: 'Não foi possivel deslogar do app',
+			})
+		}
 	}
 
 	return (

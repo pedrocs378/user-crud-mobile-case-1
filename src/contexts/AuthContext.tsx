@@ -19,8 +19,8 @@ interface SignInCredentials {
 interface AuthContextData {
 	user: User | undefined
 	signIn: (credentials: SignInCredentials) => Promise<User>
-	signOut: () => void
-	updateUserData: (data: User) => void
+	signOut: () => Promise<void>
+	updateUserData: (data: User) => Promise<void>
 }
 
 interface AuthProviderProps {

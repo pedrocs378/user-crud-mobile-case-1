@@ -40,14 +40,14 @@ export function Home() {
 			Toast.show({
 				type: 'success',
 				text1: 'Sucesso',
-				text2: 'você já pode acessar o app',
+				text2: 'Você já pode acessar o app',
 			})
 
 			navigation.reset({
 				index: 0,
 				routes: [{ name: 'Profile' }]
 			})
-		} catch {
+		} catch (err) {
 			Toast.show({
 				type: 'error',
 				text1: 'Erro',
