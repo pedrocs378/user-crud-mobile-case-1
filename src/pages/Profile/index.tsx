@@ -27,7 +27,7 @@ import {
 
 export function Profile() {
 
-	const { signOut } = useAuth()
+	const { user, signOut } = useAuth()
 
 	const navigation = useNavigation()
 
@@ -73,11 +73,11 @@ export function Profile() {
 
 					<ProfileUserContent>
 						<UserWelcomeText>
-							Bem vindo, <UserWelcomeSpanText>Pedro César</UserWelcomeSpanText>
+							Bem vindo, <UserWelcomeSpanText>{user?.name}</UserWelcomeSpanText>
 						</UserWelcomeText>
 
 						<UserEmail>
-							pedrocs378@gmail.com
+							{user?.email}
 						</UserEmail>
 
 						<EditProfileButton

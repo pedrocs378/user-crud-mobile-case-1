@@ -28,6 +28,12 @@ export function Home() {
 
 	async function handleSignIn() {
 		if (!email.trim() && !password.trim()) {
+			Toast.show({
+				type: 'error',
+				text1: 'Erro',
+				text2: 'Entre com suas credenciais',
+			})
+
 			return
 		}
 
