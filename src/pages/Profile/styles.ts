@@ -50,6 +50,7 @@ export const UserWelcomeText = styled.Text`
 	font-family: ${fonts.poppins600};
 	font-size: 22px;
 	color: ${colors.black};
+	text-align: center;
 `
 
 export const UserWelcomeSpanText = styled.Text`
