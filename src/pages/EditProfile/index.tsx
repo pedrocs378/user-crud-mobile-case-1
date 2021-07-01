@@ -6,9 +6,15 @@ import { Ionicons } from '@expo/vector-icons'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 
+import { useAuth } from '../../hooks/useAuth'
+
 import { Container, Title, BackButtonText } from './styles'
 
 export function EditProfile() {
+	const { user } = useAuth()
+
+	const [name, setName] = useState(user?.name)
+	const [email, setEmail] = useState(user?.email)
 	const [showPassword, setShowPassword] = useState(false)
 	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
 
@@ -19,20 +25,24 @@ export function EditProfile() {
 			<Title>Editar perfil</Title>
 
 			<Input
+				placeholder="Nome"
+				selectTextOnFocus
+				textContentType="name"
+				autoCapitalize="words"
+				autoCompleteType="name"
+				value={name}
+				onChangeText={text => setName(text)}
+			/>
+
+			<Input
 				placeholder="E-mail"
 				keyboardType="email-address"
 				selectTextOnFocus
 				textContentType="emailAddress"
 				autoCapitalize="none"
 				autoCompleteType="email"
-			/>
-
-			<Input
-				placeholder="Nome"
-				selectTextOnFocus
-				textContentType="name"
-				autoCapitalize="words"
-				autoCompleteType="name"
+				value={email}
+				onChangeText={text => setEmail(text)}
 			/>
 
 			<Input
