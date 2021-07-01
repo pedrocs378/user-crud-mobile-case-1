@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading'
+import Toast from 'react-native-toast-message'
 import {
   OpenSans_700Bold,
   OpenSans_600SemiBold,
@@ -14,6 +15,8 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold
 } from '@expo-google-fonts/poppins'
+
+import { AuthProvider } from './src/contexts/AuthContext'
 
 import { Routes } from './src/routes';
 
@@ -32,10 +35,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
+    <AuthProvider>
+      <NavigationContainer>
+        <StatusBar style="auto" />
 
-      <Routes />
-    </NavigationContainer>
+        <Routes />
+        <Toast ref={ref => Toast.setRef(ref)} />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

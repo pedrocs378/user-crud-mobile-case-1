@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
+import Toast from 'react-native-toast-message'
 
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+
+import { useAuth } from '../../hooks/useAuth'
 
 import {
 	Container,
@@ -15,15 +18,42 @@ import {
 } from './styles'
 
 export function Home() {
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
+
+	const { signIn } = useAuth()
 
 	const navigation = useNavigation()
 
-	function handleSignIn() {
-		navigation.reset({
-			index: 0,
-			routes: [{ name: 'Profile' }]
-		})
+	async function handleSignIn() {
+		if (!email.trim() && !password.trim()) {
+			return
+		}
+
+		try {
+			await signIn({
+				email,
+				password
+			})
+
+			Toast.show({
+				type: 'success',
+				text1: 'Sucesso',
+				text2: 'você já pode acessar o app',
+			})
+
+			navigation.reset({
+				index: 0,
+				routes: [{ name: 'Profile' }]
+			})
+		} catch {
+			Toast.show({
+				type: 'error',
+				text1: 'Erro',
+				text2: 'Não foi possivel entrar na sua conta',
+			})
+		}
 	}
 
 	return (
@@ -38,6 +68,8 @@ export function Home() {
 				textContentType="emailAddress"
 				autoCapitalize="none"
 				autoCompleteType="email"
+				value={email}
+				onChangeText={text => setEmail(text)}
 			/>
 
 			<Input
@@ -45,6 +77,8 @@ export function Home() {
 				textContentType="password"
 				selectTextOnFocus
 				secureTextEntry={!showPassword}
+				value={password}
+				onChangeText={text => setPassword(text)}
 			>
 				<TouchableWithoutFeedback
 					onPress={() => setShowPassword(state => !state)}
