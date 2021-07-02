@@ -23,6 +23,8 @@ export function EditProfile() {
 
 	const [name, setName] = useState(user?.name)
 	const [email, setEmail] = useState(user?.email)
+	const [password, setPassword] = useState('')
+	const [password_confirmation, setPasswordConfirmation] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
 	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
 	const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
@@ -36,11 +38,21 @@ export function EditProfile() {
 			const schema = Yup.object().shape({
 				name: Yup.string().required('Nome obrigatório').min(3, 'Nome muito curto'),
 				email: Yup.string().required('Email obrigatório').email('O email precisa ser válido'),
+				password: Yup.string(),
+				password_confirmation: Yup.string()
+					.when('password', {
+						is: (value: string) => !!value.length,
+						then: Yup.string().required('Confirmação da senha é obrigatória'),
+						otherwise: Yup.string()
+					})
+					.oneOf([Yup.ref('password'), undefined], 'As senhas precisam ser iguais')
 			})
 
 			const data = {
 				name,
-				email
+				email,
+				password,
+				password_confirmation
 			}
 
 			await schema.validate(data, {
@@ -56,6 +68,8 @@ export function EditProfile() {
 			})
 
 			Keyboard.dismiss()
+			setPassword('')
+			setPasswordConfirmation('')
 
 			updateUserData(response.data)
 		} catch (err) {
@@ -118,6 +132,9 @@ export function EditProfile() {
 				textContentType="password"
 				selectTextOnFocus
 				secureTextEntry={!showPassword}
+				error={!!validationErrors['password']}
+				value={password}
+				onChangeText={text => setPassword(text)}
 			>
 				<TouchableWithoutFeedback
 					onPress={() => setShowPassword(state => !state)}
@@ -143,6 +160,9 @@ export function EditProfile() {
 				textContentType="password"
 				selectTextOnFocus
 				secureTextEntry={!showPasswordConfirmation}
+				error={!!validationErrors['password_confirmation']}
+				value={password_confirmation}
+				onChangeText={text => setPasswordConfirmation(text)}
 			>
 				<TouchableWithoutFeedback
 					onPress={() => setShowPasswordConfirmation(state => !state)}

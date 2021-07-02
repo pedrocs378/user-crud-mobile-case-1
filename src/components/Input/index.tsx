@@ -9,7 +9,6 @@ type InputProps = TextInputProps & {
 }
 
 export function Input({ error = false, children, ...rest }: InputProps) {
-
 	return (
 		<Container isErrored={error}>
 			<InputText {...rest} />
