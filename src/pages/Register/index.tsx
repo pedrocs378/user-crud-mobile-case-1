@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import Toast from 'react-native-toast-message'
+import { validateCPF } from 'validations-br'
 import * as Yup from 'yup'
 
 import { Button } from '../../components/Button'
@@ -25,6 +26,7 @@ interface ValidationErrors {
 export function Register() {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
+	const [cpf, setCpf] = useState('')
 	const [password, setPassword] = useState('')
 	const [password_confirmation, setPasswordConfirmation] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
@@ -40,6 +42,10 @@ export function Register() {
 			const schema = Yup.object().shape({
 				name: Yup.string().required('Nome obrigatório'),
 				email: Yup.string().required('Email obrigatório').email('O email precisa ser válido'),
+				cpf: Yup
+					.string()
+					.required('CPF obrigatório')
+					.test('isCpf', 'CPF inválido', value => validateCPF(String(value))),
 				password: Yup.string().required('Senha obrigatória').min(6, 'A senha precisa ter no mínimo 6 caracteres'),
 				password_confirmation: Yup.string()
 					.oneOf([Yup.ref('password'), null], 'As senhas precisam ser iguais')
@@ -48,6 +54,7 @@ export function Register() {
 			const data = {
 				name,
 				email,
+				cpf,
 				password,
 				password_confirmation
 			}
@@ -56,12 +63,7 @@ export function Register() {
 				abortEarly: false
 			})
 
-			await api.post('/users', {
-				name,
-				email,
-				password,
-				password_confirmation
-			})
+			await api.post('/users', data)
 
 			Toast.show({
 				type: 'success',
@@ -124,6 +126,16 @@ export function Register() {
 					error={!!validationErrors['email']}
 					value={email}
 					onChangeText={text => setEmail(text)}
+				/>
+
+				<Input
+					placeholder="CPF"
+					keyboardType="numeric"
+					selectTextOnFocus
+					autoCapitalize="none"
+					error={!!validationErrors['cpf']}
+					value={cpf}
+					onChangeText={text => setCpf(text)}
 				/>
 
 				<Input

@@ -12,7 +12,7 @@ export const Container = styled.View<ContainerProps>`
 	border-bottom-width: 0.8px;
 	border-bottom-color: ${({ isErrored }) => isErrored ? colors.red : 'rgba(3, 1, 76, 0.2)'};
 
-	margin-bottom: 46px;
+	margin-bottom: 32px;
 
 	flex-direction: row;
 	align-items: center;
