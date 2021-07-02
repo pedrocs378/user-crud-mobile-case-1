@@ -3,10 +3,14 @@ import styled from "styled-components/native";
 import { colors } from "../../styles/colors";
 import { fonts } from "../../styles/fonts";
 
-export const Container = styled.View`
+interface ContainerProps {
+	isErrored: boolean
+}
+
+export const Container = styled.View<ContainerProps>`
 	width: 100%;
 	border-bottom-width: 0.8px;
-	border-bottom-color: rgba(3, 1, 76, 0.2);
+	border-bottom-color: ${({ isErrored }) => isErrored ? colors.red : 'rgba(3, 1, 76, 0.2)'};
 
 	margin-bottom: 46px;
 
@@ -17,8 +21,9 @@ export const Container = styled.View`
 export const InputText = styled.TextInput`
 	flex: 1;
 	height: 50px;
+	margin-right: 5px;
+
+	font-size: 16px;
 	font-family: ${fonts.openSans400};
 	color: ${colors.blue800};
-	font-size: 16px;
-	margin-right: 5px;
 `

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/core'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import Toast from 'react-native-toast-message'
+import { useNavigation } from '@react-navigation/core'
 import { Ionicons } from '@expo/vector-icons'
+import * as Yup from 'yup'
 
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
@@ -9,16 +11,80 @@ import { Input } from '../../components/Input'
 import { useAuth } from '../../hooks/useAuth'
 
 import { Container, Title, BackButtonText } from './styles'
+import { api } from '../../services/api'
+import { Keyboard } from 'react-native'
+
+interface ValidationErrors {
+	[key: string]: string
+}
 
 export function EditProfile() {
-	const { user } = useAuth()
+	const { user, updateUserData } = useAuth()
 
 	const [name, setName] = useState(user?.name)
 	const [email, setEmail] = useState(user?.email)
 	const [showPassword, setShowPassword] = useState(false)
 	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
+	const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
 
 	const navigation = useNavigation()
+
+	async function handleUpdateUser() {
+		try {
+			setValidationErrors({})
+
+			const schema = Yup.object().shape({
+				name: Yup.string().required('Nome obrigatório').min(3, 'Nome muito curto'),
+				email: Yup.string().required('Email obrigatório').email('O email precisa ser válido'),
+			})
+
+			const data = {
+				name,
+				email
+			}
+
+			await schema.validate(data, {
+				abortEarly: false
+			})
+
+			const response = await api.put(`/profile`, data)
+
+			Toast.show({
+				type: 'success',
+				text1: 'Sucesso',
+				text2: 'Perfil atualizado!'
+			})
+
+			Keyboard.dismiss()
+
+			updateUserData(response.data)
+		} catch (err) {
+			if (err instanceof Yup.ValidationError) {
+				err.inner.forEach(error => {
+					setValidationErrors(state => {
+						return {
+							...state,
+							[error.path || '']: error.message
+						}
+					})
+				})
+
+				Toast.show({
+					type: 'error',
+					text1: 'Erro',
+					text2: err.inner[0].message,
+				})
+
+				return
+			}
+
+			Toast.show({
+				type: 'error',
+				text1: 'Erro',
+				text2: 'Não foi possivel atualizar o perfil',
+			})
+		}
+	}
 
 	return (
 		<Container>
@@ -30,6 +96,7 @@ export function EditProfile() {
 				textContentType="name"
 				autoCapitalize="words"
 				autoCompleteType="name"
+				error={!!validationErrors['name']}
 				value={name}
 				onChangeText={text => setName(text)}
 			/>
@@ -41,6 +108,7 @@ export function EditProfile() {
 				textContentType="emailAddress"
 				autoCapitalize="none"
 				autoCompleteType="email"
+				error={!!validationErrors['email']}
 				value={email}
 				onChangeText={text => setEmail(text)}
 			/>
@@ -95,7 +163,7 @@ export function EditProfile() {
 				</TouchableWithoutFeedback>
 			</Input>
 
-			<Button>Salvar</Button>
+			<Button onPress={handleUpdateUser}>Salvar</Button>
 
 			<TouchableWithoutFeedback onPress={() => navigation.goBack()}>
 				<BackButtonText>Voltar</BackButtonText>
