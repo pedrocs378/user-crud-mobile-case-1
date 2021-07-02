@@ -26,7 +26,6 @@ import {
 } from './styles'
 
 export function Profile() {
-
 	const { user, signOut } = useAuth()
 
 	const navigation = useNavigation()
@@ -34,12 +33,6 @@ export function Profile() {
 	async function handleLoggout() {
 		try {
 			await signOut()
-
-			Toast.show({
-				type: 'success',
-				text1: 'Sucesso',
-				text2: 'Você deslogou do app',
-			})
 
 			navigation.reset({
 				index: 0,
