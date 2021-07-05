@@ -91,8 +91,6 @@ export function EditProfile() {
 				return
 			}
 
-			console.log(err)
-
 			Toast.show({
 				type: 'error',
 				text1: 'Erro',
