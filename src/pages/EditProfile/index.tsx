@@ -24,9 +24,9 @@ export function EditProfile() {
 	const [name, setName] = useState(user?.name)
 	const [email, setEmail] = useState(user?.email)
 	const [password, setPassword] = useState('')
-	const [password_confirmation, setPasswordConfirmation] = useState('')
+	const [old_password, setOldPassword] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
-	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
+	const [showOldPassword, setShowOldPassword] = useState(false)
 	const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
 
 	const navigation = useNavigation()
@@ -38,21 +38,20 @@ export function EditProfile() {
 			const schema = Yup.object().shape({
 				name: Yup.string().required('Nome obrigatório').min(3, 'Nome muito curto'),
 				email: Yup.string().required('Email obrigatório').email('O email precisa ser válido'),
-				password: Yup.string(),
-				password_confirmation: Yup.string()
-					.when('password', {
+				old_password: Yup.string(),
+				password: Yup.string()
+					.when('old_password', {
 						is: (value: string) => !!value.length,
-						then: Yup.string().required('Confirmação da senha é obrigatória'),
+						then: Yup.string().required('Digite sua nova senha'),
 						otherwise: Yup.string()
 					})
-					.oneOf([Yup.ref('password'), undefined], 'As senhas precisam ser iguais')
 			})
 
 			const data = {
 				name,
 				email,
+				old_password,
 				password,
-				password_confirmation
 			}
 
 			await schema.validate(data, {
@@ -69,7 +68,7 @@ export function EditProfile() {
 
 			Keyboard.dismiss()
 			setPassword('')
-			setPasswordConfirmation('')
+			setOldPassword('')
 
 			updateUserData(response.data)
 		} catch (err) {
@@ -92,10 +91,12 @@ export function EditProfile() {
 				return
 			}
 
+			console.log(err)
+
 			Toast.show({
 				type: 'error',
 				text1: 'Erro',
-				text2: 'Não foi possivel atualizar o perfil',
+				text2: 'Não foi possivel atualizar o perfil, tente novamente.',
 			})
 		}
 	}
@@ -128,18 +129,18 @@ export function EditProfile() {
 			/>
 
 			<Input
-				placeholder="Senha"
+				placeholder="Senha atual"
 				textContentType="password"
 				selectTextOnFocus
-				secureTextEntry={!showPassword}
-				error={!!validationErrors['password']}
-				value={password}
-				onChangeText={text => setPassword(text)}
+				secureTextEntry={!showOldPassword}
+				error={!!validationErrors['old_password']}
+				value={old_password}
+				onChangeText={text => setOldPassword(text)}
 			>
 				<TouchableWithoutFeedback
-					onPress={() => setShowPassword(state => !state)}
+					onPress={() => setShowOldPassword(state => !state)}
 				>
-					{showPassword ? (
+					{showOldPassword ? (
 						<Ionicons
 							name="eye-off"
 							color="rgba(3, 1, 76, 0.2)"
@@ -156,18 +157,18 @@ export function EditProfile() {
 			</Input>
 
 			<Input
-				placeholder="Confirmar senha"
+				placeholder="Nova senha"
 				textContentType="password"
 				selectTextOnFocus
-				secureTextEntry={!showPasswordConfirmation}
-				error={!!validationErrors['password_confirmation']}
-				value={password_confirmation}
-				onChangeText={text => setPasswordConfirmation(text)}
+				secureTextEntry={!showPassword}
+				error={!!validationErrors['password']}
+				value={password}
+				onChangeText={text => setPassword(text)}
 			>
 				<TouchableWithoutFeedback
-					onPress={() => setShowPasswordConfirmation(state => !state)}
+					onPress={() => setShowPassword(state => !state)}
 				>
-					{showPasswordConfirmation ? (
+					{showPassword ? (
 						<Ionicons
 							name="eye-off"
 							color="rgba(3, 1, 76, 0.2)"
